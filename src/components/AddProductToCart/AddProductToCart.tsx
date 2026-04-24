@@ -16,7 +16,8 @@ export default function AddProductToCart({ product }: AddProductToCartProps) {
   const invalidateCart = useInvalidateCart();
   const cartItem = data.find((i) => i.product.id === product.id);
 
-  const addProduct = () => {
+  const addProduct = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     upsertCart(
       { product, count: cartItem ? cartItem.count + 1 : 1 },
       { onSuccess: invalidateCart }

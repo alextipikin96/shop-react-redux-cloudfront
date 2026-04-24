@@ -23,6 +23,7 @@ import TableContainer from "@mui/material/TableContainer";
 import Box from "@mui/material/Box";
 import { useQueries } from "react-query";
 import { useInvalidateOrder, useUpdateOrderStatus } from "~/queries/orders";
+import Spinner from "~/components/Spinner";
 
 type FormValues = {
   status: OrderStatus;
@@ -68,7 +69,7 @@ export default function PageOrder() {
     return [];
   }, [order, products]);
 
-  if (isOrderLoading || isProductsLoading) return <p>loading...</p>;
+  if (isOrderLoading || isProductsLoading) return <Spinner />;
 
   const statusHistory = order?.statusHistory || [];
 
