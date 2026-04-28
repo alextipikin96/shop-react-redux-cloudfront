@@ -3,13 +3,14 @@ import Typography from "@mui/material/Typography";
 import { useAvailableProduct } from "~/queries/products";
 import { useParams } from "react-router";
 import ProductCard from "../PageProducts/components/ProductCard";
+import Spinner from "~/components/Spinner";
 
 export default function PageProduct() {
   const { id } = useParams<{ id: string }>();
   const { data: product, isLoading } = useAvailableProduct(id);
 
   if (isLoading) {
-    return <Typography>Loading...</Typography>;
+    return <Spinner />;
   }
 
   if (!product) {

@@ -12,6 +12,7 @@ import {
   useRemoveProductCache,
   useUpsertAvailableProduct,
 } from "~/queries/products";
+import Spinner from "~/components/Spinner";
 
 const initialValues: AvailableProduct = AvailableProductSchema.cast({});
 
@@ -45,7 +46,7 @@ export default function PageProductForm() {
         {id ? "Edit product" : "Create new product"}
       </Typography>
       {isLoading ? (
-        <>Loading...</>
+        <Spinner />
       ) : (
         <Formik
           initialValues={data ?? initialValues}
