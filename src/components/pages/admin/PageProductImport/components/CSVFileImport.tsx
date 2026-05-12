@@ -27,8 +27,17 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
     if (!file) return;
 
     try {
+      const authorizationToken = localStorage.getItem("authorization_token");
+      if (!authorizationToken) {
+        alert("Authorization token not found!");
+        return;
+      }
+
       const response = await axios.get(url, {
         params: { fileName: file.name },
+        headers: {
+          Authorization: `Basic ${authorizationToken}`,
+        },
       });
 
       const signedUrl = response.data.url;
@@ -47,7 +56,20 @@ export default function CSVFileImport({ url, title }: CSVFileImportProps) {
       }
     } catch (error) {
       console.error("Error uploading file:", error);
-      alert("An error occurred while uploading the file. Check console logs.");
+
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          alert(
+            "401 Unauthorized: Please provide a valid authorization token."
+          );
+        } else if (error.response?.status === 403) {
+          alert("403 Forbidden: Invalid authorization credentials.");
+        } else {
+          alert(
+            "An error occurred while uploading the file. Check console logs."
+          );
+        }
+      }
     }
   };
 
